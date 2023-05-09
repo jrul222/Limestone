@@ -3,7 +3,7 @@ name: Build and Publish NPM Package
 on:
   push:
     branches:
-      - 1.x
+      - main
 
 jobs:
   build:
@@ -31,7 +31,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: package
-          path: dist  # Update this path based on your project structure
+          path: ./dist  # Update this path based on your project structure
 
   publish:
     needs: build
@@ -57,7 +57,16 @@ jobs:
       - name: Install Gulp
         run: npm install --unsafe-perm -g gulp
 
-      - name: Publish to another repository
+      - name: Set up Git environment
         run: |
-          npm config set @uky-web:registry https://npm.pkg.github.com/
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+
+      - name: Authenticate with GitHub Packages
+        run: echo "//npm.pkg.github.com/:_authToken=\${{ secrets.GITHUB_TOKEN }}" >> ~/.npmrc
+
+      - name: Publish to GitHub Packages
+        run: |
+          echo "@uky-web:registry=https://npm.pkg.github.com/" >> .npmrc
           npm publish
+
