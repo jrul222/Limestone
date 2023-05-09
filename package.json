@@ -4,7 +4,6 @@
   "author": "University of Kentucky Web Communications",
   "repository": "git@gitlab.com:uky-web/university-web-platform/web-design-system/patternlab.git",
   "license": "UNLICENSED",
-  "private": true,
   "dependencies": {
     "ansi-colors": "^1",
     "async": "^2.6",
